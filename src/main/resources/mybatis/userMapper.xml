@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wangx.eshop.inventory.mapper.UserMapper" >
+    <resultMap id="BaseResultMap" type="com.wangx.eshop.inventory.model.User" >
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.wangx.eshop.inventory.model.User">
+        insert into tb_user(name,age) values (#{name}, #{age});
+    </insert>
+
+    <select id="findUserInfo" resultMap="BaseResultMap">
+        select * from tb_user
+    </select>
+</mapper>
