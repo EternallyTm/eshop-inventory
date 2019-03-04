@@ -24,4 +24,10 @@ public interface RedisDAO {
      */
     String get(String key);
 
+    /**
+     * 根据key删除缓存
+     * @param key
+     */
+    void delete(String key);
+
 }

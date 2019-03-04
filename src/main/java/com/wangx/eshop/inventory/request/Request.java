@@ -8,4 +8,15 @@ package com.wangx.eshop.inventory.request;
  * Copyright: Copyright (c) 2019
  */
 public interface Request {
+
+    /**
+     * 执行缓存aside cache pattern 操作
+     */
+    void process();
+
+    /**
+     * 获取商品ID
+     * @return
+     */
+    Integer getProductId();
 }

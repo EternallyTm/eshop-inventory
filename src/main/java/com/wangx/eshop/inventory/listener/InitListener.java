@@ -23,5 +23,6 @@ public class InitListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         RequestProcessorThreadPool.init();
+        System.out.println("##########线程池和内存队列初始化完成############");
     }
 }
