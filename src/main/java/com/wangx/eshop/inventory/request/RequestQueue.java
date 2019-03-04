@@ -1,7 +1,5 @@
 package com.wangx.eshop.inventory.request;
 
-import com.wangx.eshop.inventory.thread.RequestProcessorThreadPool;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -42,13 +40,6 @@ public class RequestQueue {
      */
     public static RequestQueue getInstance() {
         return Singleton.getInstance();
-    }
-
-    /**
-     * 初始化方法
-     */
-    public void init() {
-        getInstance();
     }
 
     /**
