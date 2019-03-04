@@ -1,5 +1,6 @@
 package com.wangx.eshop.inventory;
 
+import com.wangx.eshop.inventory.listener.InitListener;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -7,6 +8,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -50,6 +53,18 @@ public class EshopInventoryApplication {
         }
         JedisCluster jedisCluster = new JedisCluster(hostAndPorts);
         return jedisCluster;
+    }
+
+    /**
+     * 初始化ServletListenerRegistrationBean，在项目启动时初始化线程池
+     * @return
+     */
+
+    @Bean
+    public ServletListenerRegistrationBean servletRegistrationBean() {
+        ServletListenerRegistrationBean servletListenerRegistrationBean = new ServletListenerRegistrationBean();
+        servletListenerRegistrationBean.setListener(new InitListener());
+        return servletListenerRegistrationBean;
     }
     /**
      * spring boot application 项目启动方法
