@@ -16,14 +16,17 @@ import com.wangx.eshop.inventory.service.ProductInventoryService;
 public class ProductInventoryCacheReflushRequest implements Request {
 
     private ProductInventory productInventory;
+
+    private Boolean isForceFlush;
     /**
      * 商品库存Service
      */
     private ProductInventoryService productInventoryService;
 
-    public ProductInventoryCacheReflushRequest(ProductInventory productInventory, ProductInventoryService productInventoryService) {
+    public ProductInventoryCacheReflushRequest(ProductInventory productInventory, ProductInventoryService productInventoryService, Boolean isForceFlush) {
         this.productInventory = productInventory;
         this.productInventoryService = productInventoryService;
+        this.isForceFlush = isForceFlush;
     }
 
     @Override
@@ -41,5 +44,14 @@ public class ProductInventoryCacheReflushRequest implements Request {
     @Override
     public Integer getProductId() {
         return productInventory.getProductId();
+    }
+
+    /**
+     * 获取是否强制刷新缓存的标志
+     * @return
+     */
+    @Override
+    public Boolean isForceFlush() {
+        return this.isForceFlush;
     }
 }

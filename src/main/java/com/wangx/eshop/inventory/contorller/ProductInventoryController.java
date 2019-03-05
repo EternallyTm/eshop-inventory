@@ -63,7 +63,8 @@ public class ProductInventoryController {
     public Response<ProductInventory> getProductInventory(ProductInventory productInventory) {
         Response<ProductInventory> response = new Response<>();
         try {
-            Request request = new ProductInventoryCacheReflushRequest(productInventory, productInventoryService);
+            System.out.println("接受到一个查询商品的读请求");
+            Request request = new ProductInventoryCacheReflushRequest(productInventory, productInventoryService, false);
             requestAsyncProcessService.process(request);
             long startTime = System.currentTimeMillis();
             long endTime = 0L;
@@ -92,6 +93,18 @@ public class ProductInventoryController {
             //超过了200ms没有读到缓存中的数据，则尝试直接从数据库中读取数据
             ProductInventory productInventoryToDb = productInventoryService.findProductInventory(productInventory);
             if (productInventoryToDb != null) {
+
+                //将从数据库中获取的数据刷新到缓存中,这里由于高并发的场景，所以直接修改刷新请求可能会出现并发问题，所以需要跳过都请求去重，强制刷新缓存
+                Request forceFlushRequest = new ProductInventoryCacheReflushRequest(productInventory, productInventoryService, true);
+                /**
+                 * 代码运行到这里，会出现三种情况：
+                 * 1. 上次也是都请求，数据刷新到了redis,但是数据被redis的LUR算法给清理掉了，标志位还是false，
+                 * 所以这里请求是拿不到数据的，需要在放一个读request请求去刷新一下缓存
+                 * 2.可能200ms内，就是都请求一直在队列中积压着，没有等待到它执行（加机器）
+                 * 所以直接查一次数据库，然后给队列中塞进去一个刷新缓存的请求
+                 * 3. 数据库里本身没有，缓存穿透，穿透redis,请求达到mysql库
+                 */
+                requestAsyncProcessService.process(forceFlushRequest);
                 response.setStatus(Response.SUCCESS);
                 response.setData(productInventoryToDb);
                 return response;

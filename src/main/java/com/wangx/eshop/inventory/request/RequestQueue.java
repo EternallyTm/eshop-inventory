@@ -2,7 +2,9 @@ package com.wangx.eshop.inventory.request;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author: wangx
@@ -17,6 +19,11 @@ public class RequestQueue {
      * 初始化请求队列
      */
     private List<ArrayBlockingQueue<Request>> blockingQueues = new ArrayList<>();
+
+    /**
+     * 标识位map
+     */
+    private Map<Integer, Boolean> flagMap = new ConcurrentHashMap<>();
 
     /**
      * 使用内部类去初始化单例，保证绝对的线程安全
@@ -65,5 +72,13 @@ public class RequestQueue {
      */
     public ArrayBlockingQueue<Request> getQueue(int index) {
         return this.blockingQueues.get(index);
+    }
+
+    /**
+     * 获取表示位Map
+     * @return
+     */
+    public Map<Integer,Boolean> getFlagMap() {
+        return flagMap;
     }
 }

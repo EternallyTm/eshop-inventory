@@ -19,4 +19,10 @@ public interface Request {
      * @return
      */
     Integer getProductId();
+
+    /**
+     * 是否强制刷新的标志
+     * @return
+     */
+    Boolean isForceFlush();
 }
