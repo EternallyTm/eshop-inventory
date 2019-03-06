@@ -1,2 +1,1 @@
-# eshop-inventory
-# eshop-inventory
+# 电商详情页系统库存服务
