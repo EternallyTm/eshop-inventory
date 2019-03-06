@@ -37,7 +37,7 @@ public class RequestProcessorThread implements Callable<Boolean> {
 
                 //判断是否强制执行刷新缓存操作
                 if (!isForceFlush) {
-                    //先做都请求路由
+                    //先做读请求路由
                     RequestQueue requestQueue = RequestQueue.getInstance();
                     Map<Integer, Boolean> flagMap = requestQueue.getFlagMap();
                     if (request instanceof ProductInventoryDBUpdateRequest) {
@@ -52,7 +52,7 @@ public class RequestProcessorThread implements Callable<Boolean> {
                         //如果是缓存刷新的请求，而且发现表示不为空，但是标识为false，这就说明前面已经有一个数据跟新请求，一个缓存刷新请求了，这就不用再做任何操作了，
                         //就不应该将该请求加入到队列中进行等待了
                         if (flag != null && !flag) {
-                            return true;
+                            continue;
                         }
 
                         //如果flag是null，
